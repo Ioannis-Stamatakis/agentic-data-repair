@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentic-data-repair"
+version = "1.0.0"
+description = "AI-powered self-healing data pipeline using Pydantic AI & Gemini"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.10",
+    "pydantic-ai>=0.0.15",
+    "typer[all]>=0.12",
+    "rich>=13.7",
+    "email-validator>=2.0",
+    "python-dotenv>=1.0.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/data_repair"]
+
+[project.scripts]
+data-repair = "data_repair.cli:app"
