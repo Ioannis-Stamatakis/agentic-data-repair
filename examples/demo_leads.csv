@@ -1,0 +1,48 @@
+id,name,email,country_code,segment,contract_value
+1,Alice Johnson,user1@company.com,CA,Mid-Market,96665.00
+2,Alice Johnson,user2@company.com,CA,Enterprise,90959.00
+3,James Wilson,user3@company.com,ES,Mid-Market,14888.00
+4,Emma Wilson,user4@company.com,FR,Enterprise,195784.00
+5,Frank Miller,user5@company.com,DE,Mid-Market,196685.00
+6,Lucas Brown,user6@company.com,CA,Enterprise,40896.00
+7,Frank Miller,user7@company.com,ES,Enterprise,53762.00
+8,Emma Wilson,user8@company.com,CA,SMB,84279.00
+9,James Wilson,user9@company.com,US,Enterprise,164982.00
+10,Isabel Martinez,user10@company.com,ES,Enterprise,163928.00
+11,Henry Taylor,user11@company.com,AU,Enterprise,88438.00
+12,Lucas Brown,user12@company.com,GB,SMB,12521.00
+13,Frank Miller,user13@company.com,JP,Mid-Market,53759.00
+14,Frank Miller,user14@company.com,US,Enterprise,178990.00
+15,James Wilson,user15@company.com,CA,Enterprise,122206.00
+16,Frank Miller,user16@company.com,ES,Mid-Market,21339.00
+17,Bob Smith,user17@company.com,GB,Enterprise,37249.00
+18,Alice Johnson,user18@company.com,CA,Enterprise,146654.00
+19,James Wilson,user19@company.com,CA,Enterprise,132118.00
+20,Lucas Brown,user20@company.com,AU,Mid-Market,129552.00
+21,James Wilson,user21@company.com,AU,Mid-Market,51933.00
+22,David Brown,user22@company.com,AU,Mid-Market,59499.00
+23,James Wilson,user23@company.com,AU,Mid-Market,135315.00
+24,Bob Smith,user24@company.com,ES,Mid-Market,95804.00
+25,James Wilson,user25@company.com,AU,SMB,196868.00
+26,Frank Miller,user26@company.com,CA,Mid-Market,110555.00
+27,Katherine White,user27@company.com,US,Mid-Market,22820.00
+28,Lucas Brown,user28@company.com,GB,Enterprise,167560.00
+29,David Brown,user29@company.com,FR,SMB,17818.00
+30,Isabel Martinez,user30@company.com,US,Mid-Market,163784.00
+31,John Doe,john.doe@example.com,USA,Enterprise,125000
+32,jane smith,jane.smith@example.com,GB,Mid-Market,75000
+33,Michael Chen,michael.chen@startup.io,US,small business,18000
+34,Sarah Wilson,sarah@test.com,United Kingdom,Enterprise,150000
+35,BOB MARLEY,bob@music.com,GB,Enterprise,95000
+36,charlie chaplin,charlie@film.com,FR,Mid-Market,38000
+37,Diana Prince,diana@corp.com,US,enterprise,180000
+38,Eric Cartman,eric@southpark.com,usa,Mid-Market,55000
+39,Fiona Apple,fiona@music.com,US,mid-market,"$45,000"
+40,George Lucas,george@starwars.com,US,Enterprise,"$200,000.00"
+41,helen mirren,helen@example.com,uk,Enterprise,105000
+42,IVAN DRAGO,ivan@boxing.com,russia,SMB,22000
+43,,noempty@test.com,US,Enterprise,50000
+44,Invalid Email,not-an-email,US,SMB,10000
+45,Negative Value,negative@test.com,US,Mid-Market,-5000
+46,Bad Country,bad@test.com,ZZZ,Enterprise,75000
+47,Missing Data,,,,0

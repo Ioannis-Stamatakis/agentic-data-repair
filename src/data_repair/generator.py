@@ -5,94 +5,207 @@ import random
 from pathlib import Path
 
 
-def generate_sample_data(output_path: str) -> None:
-    """Generate 50 sample sales leads with varying quality.
+def generate_sample_data(output_path: str, size: int = 50) -> None:
+    """Generate sample sales leads with varying quality.
 
-    Distribution:
-    - 30 clean records: Perfect data that passes validation
-    - 15 fixable records: Data with issues the AI can repair
-    - 5 unfixable records: Data that cannot be repaired
+    Distribution (scalable based on size):
+    - 60% clean records: Perfect data that passes validation
+    - 30% fixable records: Data with issues the AI can repair
+    - 10% unfixable records: Data that cannot be repaired
 
     Args:
         output_path: Path to output CSV file
+        size: Total number of records to generate (default: 50)
     """
     leads = []
 
-    # 30 CLEAN RECORDS - Perfect validation
+    # Calculate distribution
+    clean_count = int(size * 0.60)
+    fixable_count = int(size * 0.30)
+    unfixable_count = size - clean_count - fixable_count
+
+    # Name pools
     clean_names = [
         "Alice Johnson", "Bob Smith", "Carol Davis", "David Brown",
-        "Emma Wilson", "Frank Miller", "Grace Lee", "Henry Taylor"
+        "Emma Wilson", "Frank Miller", "Grace Lee", "Henry Taylor",
+        "Isabel Martinez", "James Wilson", "Katherine White", "Lucas Brown",
+        "Maria Garcia", "Nathan Lee", "Olivia Anderson", "Patrick Clark"
     ]
+
+    dirty_names = [
+        "alice cooper", "BOB MARLEY", "charlie chaplin", "DIANA ROSS",
+        "eddie murphy", "FRANK SINATRA", "grace jones", "HARRY STYLES",
+        "isaac newton", "JANE AUSTEN", "kevin hart", "LISA SIMPSON",
+        "michael jordan", "NANCY DREW", "oscar wilde", "PAULA ABDUL"
+    ]
+
     clean_countries = ["US", "GB", "DE", "FR", "JP", "AU", "CA", "ES"]
 
-    for i in range(1, 31):
+    # Country variations for AI to fix
+    dirty_countries = [
+        "USA", "usa", "United States", "America", "U.S.", "U.S.A.",
+        "UK", "uk", "United Kingdom", "Britain", "England",
+        "germany", "Deutschland", "GERMANY",
+        "france", "FRANCE", "Francia",
+        "japan", "JAPAN", "Nippon",
+        "australia", "AUSTRALIA", "Aus",
+        "canada", "CANADA", "CAN",
+        "spain", "SPAIN", "España", "spain",
+        "italy", "ITALY", "IT", "Italia",
+        "russia", "RUSSIA", "RU"
+    ]
+
+    # Segment variations
+    segment_variations = {
+        'Enterprise': ['enterprise', 'ENTERPRISE', 'large', 'big business', 'corporate'],
+        'Mid-Market': ['mid-market', 'MID-MARKET', 'midmarket', 'medium', 'mid market'],
+        'SMB': ['smb', 'SMB', 'small business', 'small', 'startup', 'small-medium']
+    }
+
+    email_domains = ['company.com', 'example.com', 'business.org', 'corp.io', 'test.com', 'acme.com']
+
+    current_id = 1
+
+    # CLEAN RECORDS - Perfect validation
+    for i in range(clean_count):
         leads.append({
-            'id': i,
+            'id': current_id,
             'name': random.choice(clean_names),
-            'email': f"user{i}@company.com",
+            'email': f"user{current_id}@{random.choice(email_domains)}",
             'country_code': random.choice(clean_countries),
             'segment': random.choice(['Enterprise', 'Mid-Market', 'SMB']),
             'contract_value': f"{random.randint(10000, 200000)}.00"
         })
+        current_id += 1
 
-    # 15 FIXABLE RECORDS - AI should repair these
-    fixable_data = [
-        # Country name variations (non-ISO codes)
-        {'id': 31, 'name': 'John Doe', 'email': 'john@example.com',
-         'country_code': 'USA', 'segment': 'Enterprise', 'contract_value': '50000'},
-        {'id': 32, 'name': 'Jane Smith', 'email': 'jane@example.com',
-         'country_code': 'usa', 'segment': 'Mid-Market', 'contract_value': '30000'},
-        {'id': 33, 'name': 'Mike Johnson', 'email': 'mike@test.com',
-         'country_code': 'United States', 'segment': 'SMB', 'contract_value': '15000'},
-        {'id': 34, 'name': 'Sarah Wilson', 'email': 'sarah@test.com',
-         'country_code': 'UK', 'segment': 'Enterprise', 'contract_value': '120000'},
-        {'id': 35, 'name': 'Tom Brown', 'email': 'tom@example.com',
-         'country_code': 'germany', 'segment': 'Mid-Market', 'contract_value': '45000'},
+    # FIXABLE RECORDS - AI should repair these (30% of total)
+    for i in range(fixable_count):
+        issue_type = random.choice(['country', 'name', 'segment', 'value', 'multiple'])
+        correct_segment = random.choice(['Enterprise', 'Mid-Market', 'SMB'])
+        contract_val = random.randint(10000, 200000)
 
-        # Name case issues (not Title Case)
-        {'id': 36, 'name': 'alice cooper', 'email': 'alice@example.com',
-         'country_code': 'US', 'segment': 'SMB', 'contract_value': '12000'},
-        {'id': 37, 'name': 'BOB MARLEY', 'email': 'bob@music.com',
-         'country_code': 'GB', 'segment': 'Enterprise', 'contract_value': '95000'},
-        {'id': 38, 'name': 'charlie chaplin', 'email': 'charlie@film.com',
-         'country_code': 'FR', 'segment': 'Mid-Market', 'contract_value': '38000'},
+        if issue_type == 'country':
+            # Just country code issue
+            leads.append({
+                'id': current_id,
+                'name': random.choice(clean_names),
+                'email': f"user{current_id}@{random.choice(email_domains)}",
+                'country_code': random.choice(dirty_countries),
+                'segment': correct_segment,
+                'contract_value': str(contract_val)
+            })
+        elif issue_type == 'name':
+            # Just name casing issue
+            leads.append({
+                'id': current_id,
+                'name': random.choice(dirty_names),
+                'email': f"user{current_id}@{random.choice(email_domains)}",
+                'country_code': random.choice(clean_countries),
+                'segment': correct_segment,
+                'contract_value': str(contract_val)
+            })
+        elif issue_type == 'segment':
+            # Just segment variation
+            segment_vars = random.choice(list(segment_variations.values()))
+            leads.append({
+                'id': current_id,
+                'name': random.choice(clean_names),
+                'email': f"user{current_id}@{random.choice(email_domains)}",
+                'country_code': random.choice(clean_countries),
+                'segment': random.choice(segment_vars),
+                'contract_value': str(contract_val)
+            })
+        elif issue_type == 'value':
+            # Just value formatting issue
+            formatted_val = random.choice([
+                f"${contract_val:,}",
+                f"${contract_val:,.2f}",
+                f"${contract_val}",
+                f"{contract_val:,}"
+            ])
+            leads.append({
+                'id': current_id,
+                'name': random.choice(clean_names),
+                'email': f"user{current_id}@{random.choice(email_domains)}",
+                'country_code': random.choice(clean_countries),
+                'segment': correct_segment,
+                'contract_value': formatted_val
+            })
+        else:  # multiple issues
+            # Combine 2-3 issues
+            segment_vars = random.choice(list(segment_variations.values()))
+            formatted_val = random.choice([
+                f"${contract_val:,}",
+                f"${contract_val:,.2f}",
+            ])
+            email = f"user{current_id}@{random.choice(email_domains)}"
+            if random.random() > 0.5:
+                email = email.upper()  # Uppercase email
 
-        # Segment variations (not exact enum values)
-        {'id': 39, 'name': 'Diana Prince', 'email': 'diana@corp.com',
-         'country_code': 'US', 'segment': 'small business', 'contract_value': '8000'},
-        {'id': 40, 'name': 'Eric Cartman', 'email': 'eric@southpark.com',
-         'country_code': 'US', 'segment': 'enterprise', 'contract_value': '150000'},
+            leads.append({
+                'id': current_id,
+                'name': random.choice(dirty_names),
+                'email': email,
+                'country_code': random.choice(dirty_countries),
+                'segment': random.choice(segment_vars),
+                'contract_value': formatted_val
+            })
 
-        # Contract value formatting issues
-        {'id': 41, 'name': 'Fiona Apple', 'email': 'fiona@music.com',
-         'country_code': 'US', 'segment': 'Mid-Market', 'contract_value': '$45,000'},
-        {'id': 42, 'name': 'George Lucas', 'email': 'george@starwars.com',
-         'country_code': 'US', 'segment': 'Enterprise', 'contract_value': '$200,000.00'},
+        current_id += 1
 
-        # Multiple issues combined
-        {'id': 43, 'name': 'helen mirren', 'email': 'HELEN@EXAMPLE.COM',
-         'country_code': 'uk', 'segment': 'enterprise', 'contract_value': '$105,000'},
-        {'id': 44, 'name': 'IVAN DRAGO', 'email': 'ivan@boxing.ru',
-         'country_code': 'russia', 'segment': 'mid-market', 'contract_value': '52000'},
-        {'id': 45, 'name': 'julia roberts', 'email': 'julia@hollywood.com',
-         'country_code': 'USA', 'segment': 'Enterprise', 'contract_value': '$88,500'},
-    ]
-    leads.extend(fixable_data)
+    # UNFIXABLE RECORDS - Should fail completely (10% of total)
+    unfixable_types = ['empty_name', 'invalid_email', 'negative_value', 'bad_country', 'zero_value']
 
-    # 5 UNFIXABLE RECORDS - Should fail completely
-    unfixable_data = [
-        {'id': 46, 'name': '', 'email': 'noempty@test.com',
-         'country_code': 'US', 'segment': 'Enterprise', 'contract_value': '50000'},
-        {'id': 47, 'name': 'Invalid Email', 'email': 'not-an-email',
-         'country_code': 'US', 'segment': 'SMB', 'contract_value': '10000'},
-        {'id': 48, 'name': 'Negative Value', 'email': 'negative@test.com',
-         'country_code': 'US', 'segment': 'Mid-Market', 'contract_value': '-5000'},
-        {'id': 49, 'name': 'Bad Country', 'email': 'bad@test.com',
-         'country_code': 'ZZZ', 'segment': 'Enterprise', 'contract_value': '75000'},
-        {'id': 50, 'name': 'Missing Data', 'email': '',
-         'country_code': '', 'segment': '', 'contract_value': '0'},
-    ]
-    leads.extend(unfixable_data)
+    for i in range(unfixable_count):
+        issue = unfixable_types[i % len(unfixable_types)]
+
+        if issue == 'empty_name':
+            leads.append({
+                'id': current_id,
+                'name': '',
+                'email': f"user{current_id}@{random.choice(email_domains)}",
+                'country_code': random.choice(clean_countries),
+                'segment': random.choice(['Enterprise', 'Mid-Market', 'SMB']),
+                'contract_value': str(random.randint(10000, 100000))
+            })
+        elif issue == 'invalid_email':
+            leads.append({
+                'id': current_id,
+                'name': random.choice(clean_names),
+                'email': random.choice(['not-an-email', 'missing@', '@nodomain.com', 'no-at-sign.com']),
+                'country_code': random.choice(clean_countries),
+                'segment': random.choice(['Enterprise', 'Mid-Market', 'SMB']),
+                'contract_value': str(random.randint(10000, 100000))
+            })
+        elif issue == 'negative_value':
+            leads.append({
+                'id': current_id,
+                'name': random.choice(clean_names),
+                'email': f"user{current_id}@{random.choice(email_domains)}",
+                'country_code': random.choice(clean_countries),
+                'segment': random.choice(['Enterprise', 'Mid-Market', 'SMB']),
+                'contract_value': str(random.randint(-50000, -1000))
+            })
+        elif issue == 'bad_country':
+            leads.append({
+                'id': current_id,
+                'name': random.choice(clean_names),
+                'email': f"user{current_id}@{random.choice(email_domains)}",
+                'country_code': random.choice(['ZZZ', 'XXX', 'QQQ', '123', 'INVALID']),
+                'segment': random.choice(['Enterprise', 'Mid-Market', 'SMB']),
+                'contract_value': str(random.randint(10000, 100000))
+            })
+        else:  # zero_value
+            leads.append({
+                'id': current_id,
+                'name': random.choice(clean_names) if random.random() > 0.5 else '',
+                'email': f"user{current_id}@{random.choice(email_domains)}" if random.random() > 0.5 else '',
+                'country_code': random.choice(clean_countries) if random.random() > 0.5 else '',
+                'segment': random.choice(['Enterprise', 'Mid-Market', 'SMB']) if random.random() > 0.5 else '',
+                'contract_value': '0'
+            })
+
+        current_id += 1
 
     # Write to CSV
     output_file = Path(output_path)
