@@ -1,0 +1,11 @@
+id,name,email,country_code,industry,segment,contract_value,sales_notes,confidence_score
+1,Frank Miller,user1@company.com,FR,Tech,Enterprise,34651.00,,1.0
+2,David Brown,user2@company.com,CA,Finance,Mid-Market,68243.00,,1.0
+3,Emma Wilson,user3@company.com,GB,Retail,Enterprise,68996.00,,1.0
+4,Alice Johnson,user4@company.com,ES,Healthcare,Enterprise,168496.00,,1.0
+5,Sophie Martin,sophie.martin@example.com,,,,,Lunch meeting in Paris with small bakery owner. Budget around 5000 EUR for POS system.,0.0
+6,Yuki Tanaka,yuki.tanaka@example.com,,,,,Meeting in Tokyo with Mizuho Bank executive. Enterprise software project: 5 million Yen budget.,0.0
+7,Michael Chen,michael.chen@example.com,,,,,Call with CTO of Silicon Valley AI startup. Series A funded. Cloud platform spend: $150k.,0.0
+8,Oliver Clarke,oliver.clarke@example.com,,,,,"London hospital administrator interested in medical records system. Budget: 80,000 GBP.",0.0
+9,Emma Schmidt,emma.schmidt@example.com,,,,,Berlin boutique owner. Small fashion e-commerce platform needed. Budget: 15k EUR.,0.0
+10,,noempty@test.com,,,,,Some vague notes without useful context.,0.0

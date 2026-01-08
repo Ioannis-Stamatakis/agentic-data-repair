@@ -1,0 +1,21 @@
+id,name,email,country_code,industry,segment,contract_value,sales_notes,confidence_score
+1,Grace Lee,user1@company.com,AU,Retail,SMB,94298.00,,1.0
+2,Carol Davis,user2@company.com,JP,Retail,Mid-Market,162208.00,,1.0
+3,Henry Taylor,user3@company.com,AU,Finance,Enterprise,84519.00,,1.0
+4,Grace Lee,user4@company.com,DE,Tech,Enterprise,59185.00,,1.0
+5,Grace Lee,user5@company.com,GB,Retail,Enterprise,54877.00,,1.0
+6,Carol Davis,user6@company.com,CA,Finance,Mid-Market,88329.00,,1.0
+7,Grace Lee,user7@company.com,DE,Tech,Enterprise,110865.00,,1.0
+8,Emma Wilson,user8@company.com,FR,Healthcare,SMB,91312.00,,1.0
+9,Sophie Martin,sophie.martin@example.com,,,,,Lunch meeting in Paris with small bakery owner. Budget around 5000 EUR for POS system.,0.0
+10,Yuki Tanaka,yuki.tanaka@example.com,,,,,Meeting in Tokyo with Mizuho Bank executive. Enterprise software project: 5 million Yen budget.,0.0
+11,Michael Chen,michael.chen@example.com,,,,,Call with CTO of Silicon Valley AI startup. Series A funded. Cloud platform spend: $150k.,0.0
+12,Oliver Clarke,oliver.clarke@example.com,,,,,"London hospital administrator interested in medical records system. Budget: 80,000 GBP.",0.0
+13,Emma Schmidt,emma.schmidt@example.com,,,,,Berlin boutique owner. Small fashion e-commerce platform needed. Budget: 15k EUR.,0.0
+14,James Anderson,james.anderson@example.com,,,,,Toronto-based SaaS company building HR platform. Looking at $75k annual contract.,0.0
+15,Maria Garcia,maria.garcia@example.com,,,,,"Insurance firm in Sydney discussing claims processing system. Budget 200,000 AUD.",0.0
+16,Thomas Mueller,thomas.mueller@example.com,,,,,German hospital network needs patient management software. 120k EUR available.,0.0
+17,Lisa Wang,lisa.wang@example.com,,,,,E-commerce store in New York. Small team needs inventory system for $18k.,0.0
+18,Kenji Yamamoto,kenji.yamamoto@example.com,,,,,Meeting with Tokyo startup. Developing fintech app. Seed funded: 8 million Yen budget.,0.0
+19,,noempty@test.com,,,,,Some vague notes without useful context.,0.0
+20,Invalid Email Person,not-an-email,,,,,Interested in software but no clear details.,0.0

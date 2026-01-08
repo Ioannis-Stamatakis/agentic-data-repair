@@ -55,7 +55,7 @@ def clean(
     # Process data
     console.print(f"\n[bold cyan]Dataset:[/bold cyan] {input_csv}")
     console.print(f"[bold cyan]AI Model:[/bold cyan] Gemini 2.5 Flash")
-    console.print(f"[bold cyan]Mode:[/bold cyan] 3-Stage Pipeline (Validate → Repair → Report)\n")
+    console.print(f"[bold cyan]Mode:[/bold cyan] Semantic Extraction Pipeline (Validate → Extract → Report)\n")
 
     processor = DataProcessor()
     processor.process_csv(str(input_csv))
@@ -140,67 +140,75 @@ def clean(
         title_align="left"
     ))
 
-    # Show example repairs if any
+    # Show semantic extraction examples if any
     if processor.repaired_leads and len(processor.repaired_leads) > 0:
         console.print()
-        repair_table = Table(
-            title="[bold yellow]AI REPAIR EXAMPLES[/bold yellow]",
+        extraction_table = Table(
+            title="[bold yellow]SEMANTIC EXTRACTION EXAMPLES[/bold yellow]",
             show_header=True,
             border_style="yellow",
             title_style="bold yellow"
         )
-        repair_table.add_column("Record ID", style="bold white", width=10)
-        repair_table.add_column("Field", style="bold cyan", width=14)
-        repair_table.add_column("Original Value", style="red", width=28)
-        repair_table.add_column("Repaired Value", style="green", width=28)
-        repair_table.add_column("Fix Type", style="dim", width=18)
+        extraction_table.add_column("ID", style="bold white", width=5)
+        extraction_table.add_column("Input Note (truncated)", style="dim", width=35)
+        extraction_table.add_column("Country", style="green", width=8)
+        extraction_table.add_column("Industry", style="cyan", width=10)
+        extraction_table.add_column("Value (USD)", style="green", width=12)
+        extraction_table.add_column("Confidence", style="yellow", width=10)
 
-        # Collect all repairs to show variety
-        repairs_shown = 0
-        max_repairs = 8  # Show up to 8 examples
+        # Show up to 5 successful extraction examples
+        extractions_shown = 0
+        max_extractions = 5
 
         for repair in processor.repaired_leads:
-            if repairs_shown >= max_repairs:
+            if extractions_shown >= max_extractions:
                 break
 
             original = repair['original']
             fixed = repair['repaired']
             record_id = original.get('id', '?')
 
-            # Find what changed
-            if original.get('country_code') != fixed.get('country_code'):
-                repair_table.add_row(
-                    str(record_id),
-                    "country_code",
-                    f"{original['country_code']}",
-                    f"{fixed['country_code']}",
-                    "Country ISO code"
-                )
-                repairs_shown += 1
-            if original.get('name') != fixed.get('name'):
-                repair_table.add_row(
-                    str(record_id),
-                    "name",
-                    f"{original['name']}",
-                    f"{fixed['name']}",
-                    "Title case"
-                )
-                repairs_shown += 1
-            if original.get('segment') != fixed.get('segment'):
-                # Handle both string and enum values for segment
-                fixed_segment = fixed['segment']
-                if hasattr(fixed_segment, 'value'):
-                    fixed_segment = fixed_segment.value
-                repair_table.add_row(
-                    str(record_id),
-                    "segment",
-                    f"{original['segment']}",
-                    f"{fixed_segment}",
-                    "Segment mapping"
-                )
-                repairs_shown += 1
+            # Only show if semantic extraction SUCCEEDED (sales_notes present AND fields extracted)
+            if original.get('sales_notes'):
+                country = fixed.get('country_code')
+                industry = fixed.get('industry')
+                value = fixed.get('contract_value')
 
-        console.print(repair_table)
+                # Skip if extraction failed (no fields were populated)
+                if not country and not industry and not value:
+                    continue
+
+                # Truncate note to 35 chars
+                note = original['sales_notes']
+                if len(note) > 32:
+                    note = note[:32] + "..."
+
+                # Format extracted fields
+                country_str = country if country else "N/A"
+
+                if hasattr(industry, 'value'):
+                    industry_str = industry.value
+                else:
+                    industry_str = industry if industry else "N/A"
+
+                value_str = f"${value:,.0f}" if value else "N/A"
+
+                confidence = fixed.get('confidence_score', 0.0)
+                confidence_str = f"{confidence:.1%}"
+
+                extraction_table.add_row(
+                    str(record_id),
+                    note,
+                    country_str,
+                    industry_str,
+                    value_str,
+                    confidence_str
+                )
+                extractions_shown += 1
+
+        # Only show table if we have successful extractions
+        if extractions_shown > 0:
+            console.print(extraction_table)
 
     # Footer
     console.print()

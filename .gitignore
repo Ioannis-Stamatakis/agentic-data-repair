@@ -8,7 +8,7 @@ ENV/
 .env
 
 # Claude Code plan file
-Claude.md
+CLAUDE.md
 
 # Python cache
 __pycache__/

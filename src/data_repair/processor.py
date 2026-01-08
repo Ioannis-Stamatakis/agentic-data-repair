@@ -77,7 +77,7 @@ class DataProcessor:
                 })
 
     def _prepare_row(self, row: Dict[str, str]) -> Dict:
-        """Convert CSV strings to proper types.
+        """Convert CSV strings to proper types, handle optional fields.
 
         Args:
             row: Dictionary with string values from CSV
@@ -88,17 +88,34 @@ class DataProcessor:
         Raises:
             ValueError: If type conversion fails
         """
-        # Clean contract value by removing $ and commas
-        contract_value_str = row['contract_value'].replace('$', '').replace(',', '')
-
-        return {
+        # Start with required fields
+        prepared = {
             'id': int(row['id']),
             'name': row['name'],
             'email': row['email'],
-            'country_code': row['country_code'],
-            'segment': row['segment'],
-            'contract_value': float(contract_value_str)
         }
+
+        # Optional fields - only include if present and non-empty
+        if row.get('country_code') and row['country_code'].strip():
+            prepared['country_code'] = row['country_code']
+
+        if row.get('industry') and row['industry'].strip():
+            prepared['industry'] = row['industry']
+
+        if row.get('segment') and row['segment'].strip():
+            prepared['segment'] = row['segment']
+
+        if row.get('contract_value') and row['contract_value'].strip():
+            contract_value_str = row['contract_value'].replace('$', '').replace(',', '')
+            prepared['contract_value'] = float(contract_value_str)
+
+        if row.get('sales_notes') and row['sales_notes'].strip():
+            prepared['sales_notes'] = row['sales_notes']
+
+        if row.get('confidence_score') and row['confidence_score'].strip():
+            prepared['confidence_score'] = float(row['confidence_score'])
+
+        return prepared
 
     def save_results(self, output_dir: str = 'outputs') -> None:
         """Save results to JSON files.

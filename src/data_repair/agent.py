@@ -19,45 +19,72 @@ repair_agent = Agent(
     'google-gla:gemini-2.5-flash',
     output_type=SalesLead,
     system_prompt=(
-        "You are a Data Repair Expert specializing in sales lead quality.\n\n"
-        "Your task: Fix invalid sales lead data to match the strict schema.\n\n"
-        "Rules:\n"
-        "1. Normalize country names to ISO 3166-1 alpha-2 codes:\n"
-        "   - 'United States', 'USA', 'usa' → 'US'\n"
-        "   - 'United Kingdom', 'uk', 'england' → 'GB'\n"
-        "   - 'Germany', 'deutschland', 'germany' → 'DE'\n"
-        "   - 'Japan', 'nippon' → 'JP'\n"
-        "   - 'France' → 'FR'\n"
-        "   - 'Australia' → 'AU'\n"
-        "   - 'Canada' → 'CA'\n"
-        "   - 'Spain', 'españa' → 'ES'\n"
-        "   - 'Russia' → 'RU'\n"
-        "2. Convert names to Title Case (e.g., 'john smith' → 'John Smith', 'BOB MARLEY' → 'Bob Marley')\n"
-        "3. Fix email formatting (lowercase, proper domain)\n"
-        "4. Infer segment from contract value if missing or invalid:\n"
-        "   - $100,000+ → Enterprise\n"
-        "   - $25,000-$99,999 → Mid-Market\n"
-        "   - <$25,000 → SMB\n"
-        "5. Map segment variations:\n"
-        "   - 'small business', 'smb', 'small' → SMB\n"
-        "   - 'enterprise', 'large' → Enterprise\n"
-        "   - 'mid-market', 'medium', 'midmarket' → Mid-Market\n"
-        "6. Clean contract values: Remove '$', commas, convert to float\n"
-        "7. NEVER invent personal data (names, emails) - fail gracefully if data is missing\n\n"
-        "Return a fully valid SalesLead object or raise an error if impossible."
+        "You are a Data Extraction Specialist with expertise in semantic inference.\n\n"
+        "Your task: Analyze unstructured `sales_notes` to extract missing structured fields.\n\n"
+        "EXTRACTION RULES:\n\n"
+        "1. GEOGRAPHY EXTRACTION:\n"
+        "   - Map city names to ISO 3166-1 alpha-2 country codes:\n"
+        "     • Paris, France → FR\n"
+        "     • Tokyo, Japan → JP\n"
+        "     • London, UK, United Kingdom → GB\n"
+        "     • Berlin, Germany, Deutschland → DE\n"
+        "     • New York, Silicon Valley, Seattle, United States → US\n"
+        "     • Sydney, Australia → AU\n"
+        "     • Toronto, Canada → CA\n"
+        "     • Madrid, Barcelona, Spain → ES\n"
+        "     • Brussels, Belgium → BE\n"
+        "     • Milan, Italy → IT\n"
+        "     • Warsaw, Poland → PL\n"
+        "     • Seoul, South Korea → KR\n"
+        "     • Dubai, UAE → AE\n"
+        "   - Use contextual clues (e.g., 'Mizuho Bank' suggests Japan)\n\n"
+        "2. CURRENCY CONVERSION:\n"
+        "   - Detect foreign currencies in text and convert to USD:\n"
+        "     • EUR: multiply by 1.10 (e.g., 5000 EUR → 5500 USD)\n"
+        "     • JPY/Yen: multiply by 0.007 (e.g., 5,000,000 Yen → 35,000 USD)\n"
+        "     • GBP: multiply by 1.30 (e.g., 10,000 GBP → 13,000 USD)\n"
+        "     • AUD: multiply by 0.65 (e.g., 200,000 AUD → 130,000 USD)\n"
+        "     • USD: use as-is\n"
+        "   - Handle variations: '5k', '5 million', '$150k', '80,000'\n\n"
+        "3. INDUSTRY CLASSIFICATION:\n"
+        "   - Map business descriptions to Industry enum:\n"
+        "     • Tech: software, AI, cloud, SaaS, startup, platform, DevOps, IoT, fintech app\n"
+        "     • Finance: bank, investment, trading, insurance, fintech, credit union, payment processor\n"
+        "     • Retail: bakery, shop, store, e-commerce, boutique, restaurant, wine shop, coffee shop\n"
+        "     • Healthcare: hospital, clinic, pharma, medical, pharmaceutical, dental\n"
+        "     • Other: if unclear or doesn't fit above\n\n"
+        "4. SEGMENT INFERENCE:\n"
+        "   - From contract value (if available):\n"
+        "     • $100,000+ → Enterprise\n"
+        "     • $25,000-$99,999 → Mid-Market\n"
+        "     • <$25,000 → SMB\n"
+        "   - From context: 'startup', 'small team', 'small practice' → SMB\n"
+        "   - 'Fortune 500', 'enterprise software', 'multi-site' → Enterprise\n\n"
+        "5. CONFIDENCE SCORING:\n"
+        "   - Set confidence_score based on inference certainty:\n"
+        "     • 1.0: All fields explicitly stated\n"
+        "     • 0.8-0.9: Strong contextual evidence (city name + clear industry keywords)\n"
+        "     • 0.6-0.7: Reasonable inference (some ambiguity)\n"
+        "     • 0.4-0.5: Weak signals, uncertain\n\n"
+        "6. DATA QUALITY RULES:\n"
+        "   - Convert names to Title Case if needed\n"
+        "   - Lowercase emails\n"
+        "   - NEVER invent personal data (names, emails)\n"
+        "   - If inference impossible, set field to None and lower confidence\n\n"
+        "Return a fully valid SalesLead object with inferred fields populated from sales_notes."
     )
 )
 
 
 def repair_lead(invalid_row: dict, validation_error: str) -> SalesLead:
-    """Attempt to repair an invalid lead using the AI agent.
+    """Attempt to repair an invalid lead using semantic inference.
 
     Args:
-        invalid_row: Dictionary with invalid data
+        invalid_row: Dictionary with incomplete/invalid data
         validation_error: Pydantic validation error message
 
     Returns:
-        Repaired SalesLead object with all validations passing
+        SalesLead with inferred fields populated
 
     Raises:
         Exception: If repair is impossible (e.g., missing critical data)
@@ -65,7 +92,9 @@ def repair_lead(invalid_row: dict, validation_error: str) -> SalesLead:
     prompt = (
         f"Original data: {invalid_row}\n\n"
         f"Validation error: {validation_error}\n\n"
-        "Please fix this data to match the SalesLead schema."
+        "Please extract missing structured fields from the sales_notes. "
+        "If sales_notes are provided, analyze them to infer country_code, "
+        "industry, segment, and contract_value."
     )
 
     result = repair_agent.run_sync(prompt)

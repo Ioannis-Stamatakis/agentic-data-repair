@@ -1,0 +1,11 @@
+id,name,email,country_code,segment,contract_value
+1,Sarah Anderson,sarah.anderson@techcorp.com,US,Enterprise,150000.00
+2,Michael Chen,michael.chen@innovate.io,CA,Mid-Market,75000.00
+3,Emma Thompson,emma.thompson@business.com,GB,SMB,22000.00
+4,david martinez,david.martinez@company.com,US,Enterprise,180000
+5,Jennifer Williams,jennifer.williams@global.com,USA,Mid-Market,65000
+6,ROBERT JOHNSON,robert.johnson@enterprise.com,GB,Enterprise,125000
+7,Lisa Anderson,lisa.anderson@startup.io,United States,small business,18000
+8,james wilson,james.wilson@consulting.com,United Kingdom,Mid-Market,58000
+9,Alice Johnson,user1@company.com,CA,Mid-Market,96665.00
+10,John Doe,Johndoe@company.com,US,SMB,15000

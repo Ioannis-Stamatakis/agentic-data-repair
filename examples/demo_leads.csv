@@ -33,12 +33,12 @@ id,name,email,country_code,segment,contract_value
 32,jane smith,jane.smith@example.com,GB,Mid-Market,75000
 33,Michael Chen,michael.chen@startup.io,US,small business,18000
 34,Sarah Wilson,sarah@test.com,United Kingdom,Enterprise,150000
-35,BOB MARLEY,bob@music.com,GB,Enterprise,95000
-36,charlie chaplin,charlie@film.com,FR,Mid-Market,38000
+35,JOHN DOE,john@music.com,GB,Enterprise,95000
+36,George Lucas,george@starwars.com,US,Enterprise,"$200,000.00"
 37,Diana Prince,diana@corp.com,US,enterprise,180000
 38,Eric Cartman,eric@southpark.com,usa,Mid-Market,55000
 39,Fiona Apple,fiona@music.com,US,mid-market,"$45,000"
-40,George Lucas,george@starwars.com,US,Enterprise,"$200,000.00"
+40,gary starfish,garie@starfish.com,US,Enterprise,"20000"
 41,helen mirren,helen@example.com,uk,Enterprise,105000
 42,IVAN DRAGO,ivan@boxing.com,russia,SMB,22000
 43,,noempty@test.com,US,Enterprise,50000

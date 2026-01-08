@@ -1,0 +1,194 @@
+[
+  {
+    "row": {
+      "id": "13",
+      "name": "Sophie Martin",
+      "email": "sophie.martin@example.com",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "Lunch meeting in Paris with small bakery owner. Budget around 5000 EUR for POS system.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\n  Value error, Record has sales_notes but missing extracted fields. This indicates semantic extraction is needed. [type=value_error, input_value={'id': 13, 'name': 'Sophi...'confidence_score': 0.0}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  {
+    "row": {
+      "id": "14",
+      "name": "Yuki Tanaka",
+      "email": "yuki.tanaka@example.com",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "Meeting in Tokyo with Mizuho Bank executive. Enterprise software project: 5 million Yen budget.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\n  Value error, Record has sales_notes but missing extracted fields. This indicates semantic extraction is needed. [type=value_error, input_value={'id': 14, 'name': 'Yuki ...'confidence_score': 0.0}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  {
+    "row": {
+      "id": "15",
+      "name": "Michael Chen",
+      "email": "michael.chen@example.com",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "Call with CTO of Silicon Valley AI startup. Series A funded. Cloud platform spend: $150k.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\n  Value error, Record has sales_notes but missing extracted fields. This indicates semantic extraction is needed. [type=value_error, input_value={'id': 15, 'name': 'Micha...'confidence_score': 0.0}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  {
+    "row": {
+      "id": "18",
+      "name": "James Anderson",
+      "email": "james.anderson@example.com",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "Toronto-based SaaS company building HR platform. Looking at $75k annual contract.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\n  Value error, Record has sales_notes but missing extracted fields. This indicates semantic extraction is needed. [type=value_error, input_value={'id': 18, 'name': 'James...'confidence_score': 0.0}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  {
+    "row": {
+      "id": "19",
+      "name": "Maria Garcia",
+      "email": "maria.garcia@example.com",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "Insurance firm in Sydney discussing claims processing system. Budget 200,000 AUD.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\n  Value error, Record has sales_notes but missing extracted fields. This indicates semantic extraction is needed. [type=value_error, input_value={'id': 19, 'name': 'Maria...'confidence_score': 0.0}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  {
+    "row": {
+      "id": "20",
+      "name": "Thomas Mueller",
+      "email": "thomas.mueller@example.com",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "German hospital network needs patient management software. 120k EUR available.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\n  Value error, Record has sales_notes but missing extracted fields. This indicates semantic extraction is needed. [type=value_error, input_value={'id': 20, 'name': 'Thoma...'confidence_score': 0.0}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  {
+    "row": {
+      "id": "24",
+      "name": "Pierre Dubois",
+      "email": "pierre.dubois@example.com",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "Paris clinic looking for telemedicine solution. Small practice, 8000 EUR budget.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\n  Value error, Record has sales_notes but missing extracted fields. This indicates semantic extraction is needed. [type=value_error, input_value={'id': 24, 'name': 'Pierr...'confidence_score': 0.0}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  {
+    "row": {
+      "id": "25",
+      "name": "Sarah Williams",
+      "email": "sarah.williams@example.com",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "Fortune 500 company in Seattle. Enterprise cloud migration project: $500k.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\n  Value error, Record has sales_notes but missing extracted fields. This indicates semantic extraction is needed. [type=value_error, input_value={'id': 25, 'name': 'Sarah...'confidence_score': 0.0}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  {
+    "row": {
+      "id": "27",
+      "name": "Anna Kowalski",
+      "email": "anna.kowalski@example.com",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "Credit union in Warsaw exploring core banking upgrade. 180k USD equivalent.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\n  Value error, Record has sales_notes but missing extracted fields. This indicates semantic extraction is needed. [type=value_error, input_value={'id': 27, 'name': 'Anna ...'confidence_score': 0.0}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  {
+    "row": {
+      "id": "28",
+      "name": "",
+      "email": "noempty@test.com",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "Some vague notes without useful context.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\nname\n  String should have at least 2 characters [type=string_too_short, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/string_too_short",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  {
+    "row": {
+      "id": "29",
+      "name": "Invalid Email Person",
+      "email": "not-an-email",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "Interested in software but no clear details.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\nemail\n  value is not a valid email address: An email address must have an @-sign. [type=value_error, input_value='not-an-email', input_type=str]",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  },
+  {
+    "row": {
+      "id": "30",
+      "name": "John Mystery",
+      "email": "john.mystery@example.com",
+      "country_code": "",
+      "industry": "",
+      "segment": "",
+      "contract_value": "",
+      "sales_notes": "Follow up next week.",
+      "confidence_score": "0.0"
+    },
+    "stage": "repair",
+    "validation_error": "1 validation error for SalesLead\n  Value error, Record has sales_notes but missing extracted fields. This indicates semantic extraction is needed. [type=value_error, input_value={'id': 30, 'name': 'John ...'confidence_score': 0.0}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error",
+    "repair_error": "status_code: 503, model_name: gemini-2.5-flash, body: {'error': {'code': 503, 'message': 'The model is overloaded. Please try again later.', 'status': 'UNAVAILABLE'}}"
+  }
+]

@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "name": "Emma Wilson",
+    "email": "user1@company.com",
+    "country_code": "GB",
+    "industry": "Healthcare",
+    "segment": "Mid-Market",
+    "contract_value": 89737.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  },
+  {
+    "id": 2,
+    "name": "Bob Smith",
+    "email": "user2@company.com",
+    "country_code": "FR",
+    "industry": "Healthcare",
+    "segment": "Mid-Market",
+    "contract_value": 194281.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  },
+  {
+    "id": 3,
+    "name": "Carol Davis",
+    "email": "user3@company.com",
+    "country_code": "US",
+    "industry": "Tech",
+    "segment": "Enterprise",
+    "contract_value": 180307.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  },
+  {
+    "id": 4,
+    "name": "Carol Davis",
+    "email": "user4@company.com",
+    "country_code": "US",
+    "industry": "Tech",
+    "segment": "Mid-Market",
+    "contract_value": 105358.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  },
+  {
+    "id": 5,
+    "name": "Alice Johnson",
+    "email": "user5@company.com",
+    "country_code": "DE",
+    "industry": "Retail",
+    "segment": "Enterprise",
+    "contract_value": 119540.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  },
+  {
+    "id": 6,
+    "name": "Frank Miller",
+    "email": "user6@company.com",
+    "country_code": "US",
+    "industry": "Healthcare",
+    "segment": "Mid-Market",
+    "contract_value": 94940.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  },
+  {
+    "id": 7,
+    "name": "Alice Johnson",
+    "email": "user7@company.com",
+    "country_code": "FR",
+    "industry": "Retail",
+    "segment": "Mid-Market",
+    "contract_value": 199668.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  },
+  {
+    "id": 8,
+    "name": "Bob Smith",
+    "email": "user8@company.com",
+    "country_code": "DE",
+    "industry": "Retail",
+    "segment": "Mid-Market",
+    "contract_value": 155999.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  },
+  {
+    "id": 9,
+    "name": "Grace Lee",
+    "email": "user9@company.com",
+    "country_code": "ES",
+    "industry": "Finance",
+    "segment": "SMB",
+    "contract_value": 185523.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  },
+  {
+    "id": 10,
+    "name": "David Brown",
+    "email": "user10@company.com",
+    "country_code": "FR",
+    "industry": "Retail",
+    "segment": "Enterprise",
+    "contract_value": 196111.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  },
+  {
+    "id": 11,
+    "name": "Carol Davis",
+    "email": "user11@company.com",
+    "country_code": "AU",
+    "industry": "Healthcare",
+    "segment": "Enterprise",
+    "contract_value": 94725.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  },
+  {
+    "id": 12,
+    "name": "Alice Johnson",
+    "email": "user12@company.com",
+    "country_code": "JP",
+    "industry": "Finance",
+    "segment": "Mid-Market",
+    "contract_value": 79323.0,
+    "sales_notes": null,
+    "confidence_score": 1.0
+  }
+]

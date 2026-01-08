@@ -1,6 +1,7 @@
 """Pydantic models for strict data validation."""
 
 from enum import Enum
+from typing import Optional
 from pydantic import BaseModel, EmailStr, Field, field_validator, ConfigDict
 
 
@@ -11,11 +12,20 @@ class Segment(str, Enum):
     SMB = "SMB"
 
 
-class SalesLead(BaseModel):
-    """Strict sales lead schema with comprehensive validation.
+class Industry(str, Enum):
+    """Industry classifications."""
+    TECH = "Tech"
+    FINANCE = "Finance"
+    RETAIL = "Retail"
+    HEALTHCARE = "Healthcare"
+    OTHER = "Other"
 
-    This model enforces strict typing and validation rules to ensure
-    100% schema compliance for sales lead data.
+
+class SalesLead(BaseModel):
+    """Sales lead schema with semantic inference support.
+
+    This model supports both complete records and incomplete records that require
+    semantic extraction from unstructured sales_notes field.
     """
 
     model_config = ConfigDict(
@@ -24,6 +34,7 @@ class SalesLead(BaseModel):
         use_enum_values=False
     )
 
+    # Required fields (always present)
     id: int = Field(ge=1, description="Unique lead identifier")
 
     name: str = Field(
@@ -35,18 +46,40 @@ class SalesLead(BaseModel):
         description="Valid email address"
     )
 
-    country_code: str = Field(
+    # Optional fields (can be inferred from sales_notes)
+    country_code: Optional[str] = Field(
+        default=None,
         pattern="^[A-Z]{2}$",
         description="ISO 3166-1 alpha-2 country code (e.g., US, JP, DE)"
     )
 
-    segment: Segment = Field(
+    industry: Optional[Industry] = Field(
+        default=None,
+        description="Industry classification"
+    )
+
+    segment: Optional[Segment] = Field(
+        default=None,
         description="Customer segment classification"
     )
 
-    contract_value: float = Field(
+    contract_value: Optional[float] = Field(
+        default=None,
         gt=0.0,
         description="Positive contract value in USD"
+    )
+
+    # New fields for semantic inference
+    sales_notes: Optional[str] = Field(
+        default=None,
+        description="Unstructured notes containing context for missing fields"
+    )
+
+    confidence_score: float = Field(
+        default=1.0,
+        ge=0.0,
+        le=1.0,
+        description="Confidence score for inferred fields (0.0-1.0)"
     )
 
     @field_validator('name')
@@ -66,3 +99,17 @@ class SalesLead(BaseModel):
         if not v.istitle():
             raise ValueError(f"Name must be in Title Case, got: {v}")
         return v
+
+    def model_post_init(self, __context) -> None:
+        """Validate that records with sales_notes have extracted fields.
+
+        If sales_notes is present but key fields are missing, this should
+        trigger AI extraction, not pass validation.
+        """
+        if self.sales_notes and self.sales_notes.strip():
+            # If we have sales notes but missing critical fields, fail validation
+            if not self.country_code or not self.industry or not self.contract_value:
+                raise ValueError(
+                    "Record has sales_notes but missing extracted fields. "
+                    "This indicates semantic extraction is needed."
+                )
