@@ -12,8 +12,8 @@ from rich.text import Text
 from .processor import DataProcessor
 
 app = typer.Typer(
-    name="data-repair",
-    help="AI-powered self-healing data pipeline using Pydantic AI",
+    name="pipeline",
+    help="Semantic data extraction pipeline - transforms unstructured text to structured data",
     add_completion=False
 )
 console = Console()
@@ -34,21 +34,21 @@ def clean(
         help="Directory for output JSON files"
     )
 ):
-    """Clean and repair sales lead data using AI-powered validation.
+    """Extract structured data from unstructured text using AI.
 
     Outputs 3 JSON files:
     - valid.json: Records that passed validation
-    - repaired.json: Records fixed by AI agent
+    - repaired.json: Records with AI-extracted fields
     - failed.json: Unrepairable records
 
     Example:
-        $ data-repair clean examples/sample_leads.csv
-        $ data-repair clean input.csv --output results/
+        $ pipeline clean examples/sample_leads.csv
+        $ pipeline clean input.csv --output results/
     """
     # Header
     console.print(Panel.fit(
-        "[bold cyan]Agentic Data Repair[/bold cyan]\n"
-        "AI-Powered Data Quality Pipeline",
+        "[bold cyan]Semantic Data Pipeline Agent[/bold cyan]\n"
+        "AI-Powered Semantic Extraction",
         border_style="cyan"
     ))
 
@@ -150,7 +150,7 @@ def clean(
             title_style="bold yellow"
         )
         extraction_table.add_column("ID", style="bold white", width=5)
-        extraction_table.add_column("Input Note (truncated)", style="dim", width=35)
+        extraction_table.add_column("Input Note", style="dim", width=60, no_wrap=False)
         extraction_table.add_column("Country", style="green", width=8)
         extraction_table.add_column("Industry", style="cyan", width=10)
         extraction_table.add_column("Value (USD)", style="green", width=12)
@@ -178,10 +178,8 @@ def clean(
                 if not country and not industry and not value:
                     continue
 
-                # Truncate note to 35 chars
+                # Use full note (no truncation, will wrap automatically)
                 note = original['sales_notes']
-                if len(note) > 32:
-                    note = note[:32] + "..."
 
                 # Format extracted fields
                 country_str = country if country else "N/A"

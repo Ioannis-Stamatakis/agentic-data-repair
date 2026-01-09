@@ -2,6 +2,7 @@
 
 import csv
 import json
+import time
 from pathlib import Path
 from typing import Dict, List
 from pydantic import ValidationError
@@ -22,11 +23,16 @@ class DataProcessor:
     3. Failure logging - Track unrepairable records
     """
 
-    def __init__(self):
-        """Initialize the data processor with empty result lists."""
+    def __init__(self, delay_between_repairs: float = 1.0):
+        """Initialize the data processor with empty result lists.
+
+        Args:
+            delay_between_repairs: Seconds to wait between repair attempts (default: 1.0)
+        """
         self.valid_leads: List[Dict] = []
         self.repaired_leads: List[Dict] = []
         self.failed_leads: List[Dict] = []
+        self.delay_between_repairs = delay_between_repairs
 
     def process_csv(self, input_path: str) -> None:
         """Process CSV file through 3-stage pipeline.
@@ -67,6 +73,8 @@ class DataProcessor:
                         'repaired': repaired_lead.model_dump(),
                         'error_fixed': validation_error
                     })
+                    # Add delay after successful repair to avoid rate limits
+                    time.sleep(self.delay_between_repairs)
             except Exception as repair_error:
                 # Pass 3: Unrepairable
                 self.failed_leads.append({
@@ -75,6 +83,8 @@ class DataProcessor:
                     'validation_error': validation_error,
                     'repair_error': str(repair_error)
                 })
+                # Also add delay after failure to avoid rate limits
+                time.sleep(self.delay_between_repairs)
 
     def _prepare_row(self, row: Dict[str, str]) -> Dict:
         """Convert CSV strings to proper types, handle optional fields.

@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "agentic-data-repair"
-version = "1.0.0"
-description = "AI-powered self-healing data pipeline using Pydantic AI & Gemini"
+name = "semantic-data-pipeline-agent"
+version = "2.0.0"
+description = "Semantic extraction pipeline using Pydantic AI - extracts structured data from unstructured text"
 requires-python = ">=3.11"
 dependencies = [
     "pydantic>=2.10",
@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/data_repair"]
+packages = ["src/semantic_pipeline"]
 
 [project.scripts]
-data-repair = "data_repair.cli:app"
+pipeline = "semantic_pipeline.cli:app"

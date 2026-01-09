@@ -7,8 +7,9 @@ ENV/
 # Environment variables (secrets)
 .env
 
-# Claude Code plan file
+# Sensitive Markdown Files
 CLAUDE.md
+#post.md
 
 # Python cache
 __pycache__/

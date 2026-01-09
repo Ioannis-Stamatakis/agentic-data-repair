@@ -1,6 +1,7 @@
 """Pydantic AI agent for intelligent data repair."""
 
 import os
+import time
 from pathlib import Path
 from pydantic_ai import Agent
 from .schemas import SalesLead
@@ -14,9 +15,9 @@ except ImportError:
     pass  # python-dotenv not installed, rely on environment
 
 
-# Initialize agent with Gemini Flash and structured output
+# Initialize agent with Gemini Flash Lite for cost-effective semantic extraction
 repair_agent = Agent(
-    'google-gla:gemini-2.5-flash',
+    'google-gla:gemini-2.5-flash-lite',
     output_type=SalesLead,
     system_prompt=(
         "You are a Data Extraction Specialist with expertise in semantic inference.\n\n"
@@ -76,18 +77,19 @@ repair_agent = Agent(
 )
 
 
-def repair_lead(invalid_row: dict, validation_error: str) -> SalesLead:
-    """Attempt to repair an invalid lead using semantic inference.
+def repair_lead(invalid_row: dict, validation_error: str, max_retries: int = 3) -> SalesLead:
+    """Attempt to repair an invalid lead using semantic inference with retry logic.
 
     Args:
         invalid_row: Dictionary with incomplete/invalid data
         validation_error: Pydantic validation error message
+        max_retries: Maximum number of retry attempts (default: 3)
 
     Returns:
         SalesLead with inferred fields populated
 
     Raises:
-        Exception: If repair is impossible (e.g., missing critical data)
+        Exception: If repair is impossible after all retries
     """
     prompt = (
         f"Original data: {invalid_row}\n\n"
@@ -97,5 +99,25 @@ def repair_lead(invalid_row: dict, validation_error: str) -> SalesLead:
         "industry, segment, and contract_value."
     )
 
-    result = repair_agent.run_sync(prompt)
-    return result.output
+    last_error = None
+    for attempt in range(max_retries):
+        try:
+            result = repair_agent.run_sync(prompt)
+            return result.output
+        except Exception as e:
+            last_error = e
+            error_msg = str(e)
+
+            # Check if it's a 503 or rate limit error
+            if '503' in error_msg or 'overloaded' in error_msg.lower() or 'rate' in error_msg.lower():
+                if attempt < max_retries - 1:  # Don't sleep on last attempt
+                    # Exponential backoff: 2^(attempt+1) seconds (2s, 4s, 8s)
+                    wait_time = 2 ** (attempt + 1)
+                    time.sleep(wait_time)
+                    continue
+
+            # For other errors, raise immediately
+            raise
+
+    # If all retries failed, raise the last error
+    raise last_error
