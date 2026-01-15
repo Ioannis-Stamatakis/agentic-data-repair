@@ -2,6 +2,7 @@
 
 import typer
 from pathlib import Path
+from importlib.metadata import version as get_version, PackageNotFoundError
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
@@ -11,12 +12,43 @@ from rich.text import Text
 
 from .processor import DataProcessor
 
+
+def get_app_version() -> str:
+    """Get the application version from package metadata."""
+    try:
+        return get_version("semantic-data-pipeline-agent")
+    except PackageNotFoundError:
+        return "2.0.0"  # Fallback for development
+
+
+def version_callback(value: bool):
+    """Display version information and exit."""
+    if value:
+        console.print(f"[bold cyan]Semantic Data Pipeline Agent[/bold cyan] v{get_app_version()}")
+        console.print("[dim]AI-Powered Semantic Extraction using Pydantic AI + Google Gemini[/dim]")
+        raise typer.Exit()
+
+
 app = typer.Typer(
     name="pipeline",
     help="Semantic data extraction pipeline - transforms unstructured text to structured data",
     add_completion=False
 )
 console = Console()
+
+
+@app.callback()
+def main(
+    version: bool = typer.Option(
+        None,
+        "--version", "-v",
+        callback=version_callback,
+        is_eager=True,
+        help="Show version and exit"
+    )
+):
+    """Semantic Data Pipeline Agent - AI-powered data extraction."""
+    pass
 
 
 @app.command()
