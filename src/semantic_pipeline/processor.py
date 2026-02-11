@@ -23,16 +23,20 @@ class DataProcessor:
     3. Failure logging - Track unrepairable records
     """
 
-    def __init__(self, delay_between_repairs: float = 1.0):
+    def __init__(self, delay_between_repairs: float = 1.0, min_confidence: float = 0.0):
         """Initialize the data processor with empty result lists.
 
         Args:
             delay_between_repairs: Seconds to wait between repair attempts (default: 1.0)
+            min_confidence: Minimum confidence score for repaired records (default: 0.0).
+                Records below this threshold are stored in low_confidence_leads instead.
         """
         self.valid_leads: List[Dict] = []
         self.repaired_leads: List[Dict] = []
         self.failed_leads: List[Dict] = []
+        self.low_confidence_leads: List[Dict] = []
         self.delay_between_repairs = delay_between_repairs
+        self.min_confidence = min_confidence
 
     def process_csv(self, input_path: str) -> None:
         """Process CSV file through 3-stage pipeline.
@@ -68,11 +72,20 @@ class DataProcessor:
             try:
                 with console.status(f"[yellow]Repairing lead {row.get('id', '?')}...[/yellow]"):
                     repaired_lead = repair_lead(typed_row, validation_error)
-                    self.repaired_leads.append({
+                    repaired_data = repaired_lead.model_dump()
+                    confidence = repaired_data.get('confidence_score', 0.0)
+
+                    record = {
                         'original': row,
-                        'repaired': repaired_lead.model_dump(),
+                        'repaired': repaired_data,
                         'error_fixed': validation_error
-                    })
+                    }
+
+                    if confidence >= self.min_confidence:
+                        self.repaired_leads.append(record)
+                    else:
+                        self.low_confidence_leads.append(record)
+
                     # Add delay after successful repair to avoid rate limits
                     time.sleep(self.delay_between_repairs)
             except Exception as repair_error:
@@ -149,3 +162,7 @@ class DataProcessor:
 
         with open(output_path / 'failed.json', 'w') as f:
             json.dump(self.failed_leads, f, indent=2)
+
+        if self.low_confidence_leads:
+            with open(output_path / 'low_confidence.json', 'w') as f:
+                json.dump(self.low_confidence_leads, f, indent=2)
