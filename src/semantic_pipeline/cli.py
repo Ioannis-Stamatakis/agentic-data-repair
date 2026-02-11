@@ -64,6 +64,13 @@ def clean(
         "outputs",
         "--output", "-o",
         help="Directory for output JSON files"
+    ),
+    min_confidence: float = typer.Option(
+        0.0,
+        "--min-confidence", "-c",
+        help="Minimum confidence score (0.0-1.0) for repaired records. Records below this threshold are saved separately to low_confidence.json",
+        min=0.0,
+        max=1.0
     )
 ):
     """Extract structured data from unstructured text using AI.
@@ -89,7 +96,10 @@ def clean(
     console.print(f"[bold cyan]AI Model:[/bold cyan] Gemini 2.5 Flash")
     console.print(f"[bold cyan]Mode:[/bold cyan] Semantic Extraction Pipeline (Validate → Extract → Report)\n")
 
-    processor = DataProcessor()
+    if min_confidence > 0.0:
+        console.print(f"[bold cyan]Min Confidence:[/bold cyan] {min_confidence:.0%}\n")
+
+    processor = DataProcessor(min_confidence=min_confidence)
     processor.process_csv(str(input_csv))
 
     # Save results
@@ -99,6 +109,7 @@ def clean(
     total = (
         len(processor.valid_leads) +
         len(processor.repaired_leads) +
+        len(processor.low_confidence_leads) +
         len(processor.failed_leads)
     )
     success_rate = (
@@ -131,6 +142,13 @@ def clean(
         f"[yellow]{len(processor.repaired_leads)/total*100:.1f}%[/yellow]" if total > 0 else "0%",
         "Fixed by Gemini agent"
     )
+    if processor.low_confidence_leads:
+        table.add_row(
+            "[magenta]⚠ Low Confidence[/magenta]",
+            f"[magenta]{len(processor.low_confidence_leads)}[/magenta]",
+            f"[magenta]{len(processor.low_confidence_leads)/total*100:.1f}%[/magenta]" if total > 0 else "0%",
+            f"Below {min_confidence:.0%} threshold"
+        )
     table.add_row(
         "[red]✗ Failed[/red]",
         f"[red]{len(processor.failed_leads)}[/red]",
@@ -245,6 +263,8 @@ def clean(
     console.print(f"[bold]Output Files:[/bold]")
     console.print(f"  [cyan]→[/cyan] {output_dir}/valid.json - Clean records")
     console.print(f"  [cyan]→[/cyan] {output_dir}/repaired.json - AI-fixed records")
+    if processor.low_confidence_leads:
+        console.print(f"  [cyan]→[/cyan] {output_dir}/low_confidence.json - Below {min_confidence:.0%} threshold")
     console.print(f"  [cyan]→[/cyan] {output_dir}/failed.json - Unrepairable records")
     console.print()
     console.print(f"[dim]Powered by: Pydantic AI + Google Gemini 2.5 Flash[/dim]\n")
